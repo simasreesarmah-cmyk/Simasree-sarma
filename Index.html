@@ -1,1 +1,533 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏥 Hospital Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #f4f7fc;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        .app {
+            max-width: 1400px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.12);
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.2s;
+        }
+        h1 {
+            font-weight: 600;
+            font-size: 2rem;
+            color: #0b2b4a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #e8edf4;
+            padding-bottom: 0.75rem;
+        }
+        h1 small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #3a5d7c;
+            margin-left: auto;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+        }
+        @media (max-width: 1000px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eef3f9;
+        }
+        .card-title {
+            font-weight: 600;
+            color: #1a3f5e;
+            font-size: 1.25rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .card-title i {
+            font-size: 1.4rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #3b5f7a;
+            margin-bottom: 0.2rem;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border: 1px solid #d7e0e9;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: #fafcff;
+            transition: 0.15s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2b7bc9;
+            box-shadow: 0 0 0 3px rgba(43, 123, 201, 0.15);
+            background: white;
+        }
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        .btn {
+            background: #eef3f9;
+            border: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1f486b;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background: #1a5f9e;
+            color: white;
+            box-shadow: 0 4px 8px rgba(26, 95, 158, 0.15);
+        }
+        .btn-primary:hover {
+            background: #0f4a7e;
+            transform: scale(0.97);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #bcccdb;
+        }
+        .btn-outline:hover {
+            background: #e4ecf5;
+        }
+        .btn-success {
+            background: #1e8f5e;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #15734b;
+        }
+        .btn-sm {
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+        }
+        .flex {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .mt-2 { margin-top: 1.2rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 0.8rem 0 0.2rem;
+            border-radius: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #eef4fa;
+            color: #1f405d;
+            font-weight: 600;
+            padding: 0.6rem 0.4rem;
+            text-align: left;
+            border-bottom: 2px solid #d7e0e9;
+        }
+        td {
+            padding: 0.5rem 0.4rem;
+            border-bottom: 1px solid #eaeff5;
+            vertical-align: middle;
+        }
+        .badge {
+            background: #d3e3f5;
+            color: #1a4b73;
+            padding: 0.15rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .opd-slip {
+            background: #f9fcff;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            border: 1px dashed #8bb3d6;
+            margin: 0.8rem 0;
+        }
+        .opd-slip h4 {
+            color: #12406b;
+            margin-bottom: 0.3rem;
+        }
+        .opd-slip p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .print-hide {
+            @media print {
+                display: none !important;
+            }
+        }
+        .search-box {
+            display: flex;
+            gap: 0.4rem;
+        }
+        .search-box input {
+            flex: 1;
+        }
+        .token-big {
+            font-weight: 700;
+            color: #12406b;
+            letter-spacing: 0.5px;
+        }
+        .clickable {
+            cursor: pointer;
+            color: #1a5f9e;
+            font-weight: 500;
+        }
+        .clickable:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 2px dashed #d7e2ef;
+            margin: 1rem 0;
+        }
+        .print-only {
+            display: none;
+        }
+        @media print {
+            .print-hide { display: none !important; }
+            .print-only { display: block; }
+            .app { box-shadow: none; padding: 0.5rem; }
+            .card { border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+    <h1>
+        🏥 Hospital OPD
+        <small>Register · Appointments · Reports</small>
+    </h1>
+
+    <div class="grid-2">
+        <!-- LEFT COLUMN: Register + Appointment -->
+        <div>
+            <!-- Register patient -->
+            <div class="card">
+                <div class="card-title">📋 Register new patient</div>
+                <div class="form-group">
+                    <label>Full name</label>
+                    <input type="text" id="patientName" placeholder="e.g. Ananya Sharma" />
+                </div>
+                <div class="row-2">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" id="patientAge" placeholder="30" min="0" />
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="patientGender">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex">
+                    <button class="btn btn-primary" id="registerBtn">➕ Register & book</button>
+                    <button class="btn btn-outline btn-sm" id="clearRegisterBtn">Clear</button>
+                </div>
+            </div>
+
+            <!-- Book appointment + doctor schedule -->
+            <div class="card" style="margin-top: 1.2rem;">
+                <div class="card-title">📅 Book appointment</div>
+                <div class="row-2">
+                    <div class="form-group">
+                        <label>Doctor</label>
+                        <select id="doctorSelect">
+                            <option value="Dr. Mehta">Dr. Mehta (Cardio)</option>
+                            <option value="Dr. Iyer">Dr. Iyer (Neuro)</option>
+                            <option value="Dr. Sen">Dr. Sen (Ortho)</option>
+                            <option value="Dr. Roy">Dr. Roy (Pediatrics)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="appointmentDate" />
+                    </div>
+                </div>
+                <div class="flex">
+                    <button class="btn btn-success" id="bookApptBtn">🕒 Book & generate token</button>
+                    <span style="font-size:0.9rem; color:#1f5a7e;">Token: <strong id="latestTokenDisplay">—</strong></span>
+                </div>
+                <div style="margin-top: 0.8rem; background: #eef6fd; border-radius: 40px; padding: 0.3rem 1rem; display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
+                    <span style="font-weight:500;">👨‍⚕️ Doctor-wise schedule</span>
+                    <span id="doctorScheduleDisplay" style="font-size:0.85rem;">Dr. Mehta: 2 | Dr. Iyer: 1 | Dr. Sen: 0 | Dr. Roy: 0</span>
+                </div>
+            </div>
+
+            <!-- Search patient -->
+            <div class="card" style="margin-top: 1.2rem;">
+                <div class="card-title">🔍 Search patient</div>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Name or ID (e.g. P-1001)" />
+                    <button class="btn btn-outline" id="searchBtn">Search</button>
+                    <button class="btn btn-outline btn-sm" id="clearSearchBtn">✕</button>
+                </div>
+                <div id="searchResult" style="margin-top: 0.5rem; font-size:0.9rem; min-height: 1.5rem;"></div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Patient list, visit report, OPD slip -->
+        <div>
+            <div class="card" style="max-height: 480px; display: flex; flex-direction: column;">
+                <div class="card-title" style="justify-content: space-between;">
+                    <span>📋 Patients & appointments</span>
+                    <span><span id="patientCount">0</span> registered</span>
+                </div>
+                <div style="overflow-y: auto; flex:1; margin-right: -6px; padding-right: 4px;">
+                    <table>
+                        <thead><tr><th>ID</th><th>Name</th><th>Doctor</th><th>Token</th></tr></thead>
+                        <tbody id="patientTableBody">
+                            <tr><td colspan="4" style="text-align:center; color:#6f8ba5;">No patients yet</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex" style="margin-top: 0.6rem; border-top: 1px solid #e2ebf4; padding-top: 0.6rem;">
+                    <button class="btn btn-outline btn-sm" id="generateVisitReportBtn">📊 Generate visit report</button>
+                    <button class="btn btn-outline btn-sm" id="printOpdSlipBtn">🖨️ Print OPD slip</button>
+                </div>
+            </div>
+
+            <!-- OPD slip preview & report -->
+            <div class="card" style="margin-top: 1.2rem;">
+                <div class="card-title">🧾 OPD slip / visit report</div>
+                <div id="opdSlipContainer" class="opd-slip">
+                    <p style="color:#5d7f9a;">Select a patient from the list or search to view slip</p>
+                </div>
+                <div class="flex print-hide">
+                    <button class="btn btn-outline btn-sm" id="printSlipOnlyBtn">🖨️ Print slip</button>
+                    <button class="btn btn-outline btn-sm" id="clearSlipBtn">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function(){
+        // ---------- State ----------
+        let patients = [];           // { id, name, age, gender, doctor, token, date, visitCount }
+        let tokenCounter = 1001;
+        let selectedPatientId = null;
+
+        // DOM refs
+        const patientName = document.getElementById('patientName');
+        const patientAge = document.getElementById('patientAge');
+        const patientGender = document.getElementById('patientGender');
+        const doctorSelect = document.getElementById('doctorSelect');
+        const appointmentDate = document.getElementById('appointmentDate');
+        const latestTokenDisplay = document.getElementById('latestTokenDisplay');
+        const doctorScheduleDisplay = document.getElementById('doctorScheduleDisplay');
+        const patientTableBody = document.getElementById('patientTableBody');
+        const patientCount = document.getElementById('patientCount');
+        const searchInput = document.getElementById('searchInput');
+        const searchResult = document.getElementById('searchResult');
+        const opdSlipContainer = document.getElementById('opdSlipContainer');
+
+        // ---------- helpers ----------
+        function generateToken() {
+            return tokenCounter++;
+        }
+
+        function formatDate(d) {
+            if (!d) return '—';
+            const dt = new Date(d);
+            return dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+        }
+
+        function getDoctorSchedule() {
+            const map = { 'Dr. Mehta':0, 'Dr. Iyer':0, 'Dr. Sen':0, 'Dr. Roy':0 };
+            patients.forEach(p => { if (p.doctor && map[p.doctor] !== undefined) map[p.doctor]++; });
+            return map;
+        }
+
+        function updateDoctorScheduleDisplay() {
+            const map = getDoctorSchedule();
+            doctorScheduleDisplay.textContent = 
+                `Dr. Mehta: ${map['Dr. Mehta']} | Dr. Iyer: ${map['Dr. Iyer']} | Dr. Sen: ${map['Dr. Sen']} | Dr. Roy: ${map['Dr. Roy']}`;
+        }
+
+        function updatePatientTable() {
+            if (patients.length === 0) {
+                patientTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#6f8ba5;">No patients yet</td></tr>`;
+                patientCount.textContent = '0';
+                return;
+            }
+            let html = '';
+            patients.forEach(p => {
+                html += `<tr>
+                    <td><span class="badge">${p.id}</span></td>
+                    <td><span class="clickable" data-id="${p.id}">${p.name}</span></td>
+                    <td>${p.doctor || '—'}</td>
+                    <td><span class="token-big">${p.token || '—'}</span></td>
+                </tr>`;
+            });
+            patientTableBody.innerHTML = html;
+            patientCount.textContent = patients.length;
+
+            // click on name -> show OPD slip
+            document.querySelectorAll('[data-id]').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    const id = this.dataset.id;
+                    const patient = patients.find(p => p.id === id);
+                    if (patient) showOpdSlip(patient);
+                });
+            });
+        }
+
+        function showOpdSlip(patient) {
+            if (!patient) return;
+            selectedPatientId = patient.id;
+            const visitCount = patient.visitCount || 1;
+            const dateStr = patient.date ? formatDate(patient.date) : '—';
+            opdSlipContainer.innerHTML = `
+                <h4>🏥 OPD SLIP</h4>
+                <p><strong>Patient:</strong> ${patient.name} (${patient.age} yrs, ${patient.gender})<br>
+                <strong>ID:</strong> ${patient.id} &nbsp;|&nbsp; <strong>Token:</strong> ${patient.token}<br>
+                <strong>Doctor:</strong> ${patient.doctor || '—'} &nbsp;|&nbsp; <strong>Date:</strong> ${dateStr}<br>
+                <strong>Visits:</strong> ${visitCount} &nbsp;|&nbsp; <strong>Status:</strong> Active</p>
+                <hr style="margin:0.4rem 0;">
+                <p style="font-size:0.75rem; color:#2a577a;">This is a computer-generated OPD slip. Thank you.</p>
+            `;
+        }
+
+        function refreshAll() {
+            updatePatientTable();
+            updateDoctorScheduleDisplay();
+            // if selected patient still exists, show it
+            if (selectedPatientId) {
+                const p = patients.find(pat => pat.id === selectedPatientId);
+                if (p) showOpdSlip(p);
+                else {
+                    opdSlipContainer.innerHTML = `<p style="color:#5d7f9a;">Patient not found</p>`;
+                    selectedPatientId = null;
+                }
+            } else {
+                // show latest patient if any
+                if (patients.length > 0) {
+                    const latest = patients[patients.length-1];
+                    showOpdSlip(latest);
+                } else {
+                    opdSlipContainer.innerHTML = `<p style="color:#5d7f9a;">Select a patient from the list or search to view slip</p>`;
+                }
+            }
+        }
+
+        // ---------- Register + auto book ----------
+        function registerAndBook() {
+            const name = patientName.value.trim();
+            const age = parseInt(patientAge.value);
+            const gender = patientGender.value;
+            const doctor = doctorSelect.value;
+            const date = appointmentDate.value || new Date().toISOString().split('T')[0];
+
+            if (!name) { alert('Please enter patient name.'); return; }
+            if (!age || age < 0) { alert('Please enter valid age.'); return; }
+
+            const token = generateToken();
+            const id = 'P-' + String(token).padStart(4,'0');
+            const newPatient = {
+                id,
+                name,
+                age,
+                gender,
+                doctor,
+                token,
+                date,
+                visitCount: 1
+            };
+            patients.push(newPatient);
+            latestTokenDisplay.textContent = token;
+
+            // clear register fields (except doctor/date)
+            patientName.value = '';
+            patientAge.value = '';
+            patientGender.value = 'Female';
+
+            // update UI
+            refreshAll();
+            // show the new patient slip
+            showOpdSlip(newPatient);
+            // schedule update
+            updateDoctorScheduleDisplay();
+            // search result clear
+            searchResult.innerHTML = '';
+            searchInput.value = '';
+        }
+
+        // ---------- Book appointment for existing (or create new) ----------
+        function bookAppointment() {
+            const doctor = doctorSelect.value;
+            const date = appointmentDate.value || new Date().toISOString().split('T')[0];
+            // if there is selected patient, update that patient
+            let target = null;
+            if (selectedPatientId) {
+                target = patients.find(p => p.id === selectedPatientId);
+            }
+            if (!target) {
+                // if no patient selected, create a dummy one with name "Walk-in"
+                const walkinName = 'Walk-in ' + new Date().toLocaleTimeString();
+                const token = generateToken();
+                const id = 'P-' + String(token).padStart(4,'0');
+                target = {
+                    id,
+                    name: walkinName,
+                    age: 0,
+                    gender: 'Other',
+                    doctor,
+                    token,
+     
